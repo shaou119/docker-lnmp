@@ -6,7 +6,9 @@ nginx:
     - "443:443"
   volumes:
     # app
-    - ./app/src:/usr/share/nginx/html
+    # - ./app/src:/usr/share/nginx/html
+    # local app filder
+    - /Users/master/PhpstormProjects:/usr/share/nginx
     # nginx configs
     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     - ./nginx/conf.d/:/etc/nginx/conf.d/:ro
@@ -22,9 +24,12 @@ fpm:
   ports:
     - "9000"
   volumes:
-    - ./app/src:/usr/share/nginx/html
+   # - ./app/src:/usr/share/nginx/html
+   # local app filder
+    - /Users/master/PhpstormProjects:/usr/share/nginx
     # Your php.ini
     - ./php-fpm/php.ini-production:/usr/local/etc/php/php.ini:ro
+    - ./mysql/mysql_sock:/var/run/mysqld
   # environment:
     # Set your APP env variables here:
     # - APP_KEY=
@@ -34,6 +39,8 @@ fpm:
     # - DB_PASSWORD=
   links:
     - mysql:mysql
+    - redis:redis
+
 
 # database
 mysql:
@@ -44,5 +51,18 @@ mysql:
   volumes:
     # NOTE: your data will be stored in ./mysql
     - ./mysql:/var/lib/mysql
+    - ./mysql/mysql_sock:/var/run/mysqld
   environment:
     - MYSQL_ROOT_PASSWORD=your_mysql_password
+#redis
+redis:
+  image: redis
+  ports:
+    - "6379:6379"
+
+#memcached
+memcached:
+  image: memcached
+  ports:
+    - "11211:11211"
+
