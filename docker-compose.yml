@@ -40,6 +40,7 @@ fpm:
   links:
     - mysql:mysql
     - redis:redis
+    - memcached:memcached
 
 
 # database
@@ -65,4 +66,8 @@ memcached:
   image: memcached
   ports:
     - "11211:11211"
+
+
+  
+
 
